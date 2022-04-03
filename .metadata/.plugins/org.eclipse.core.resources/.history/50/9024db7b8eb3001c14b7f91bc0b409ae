@@ -57,7 +57,7 @@ int main(void) {
 			break;
 		case 3:
 			if(hardCodedValue == 1){
-				printf("Se han detectado valores cargados forzosamente. \nIntentelo nuevamente cargando sus propios valores (Opcion 1).\n");
+				printf("Se han detectado valores cargados forzosamente. \nIntentelo cargando sus propios valores (Opcion 1).\n");
 				x = 0;
 				y = 0;
 				z = 0;

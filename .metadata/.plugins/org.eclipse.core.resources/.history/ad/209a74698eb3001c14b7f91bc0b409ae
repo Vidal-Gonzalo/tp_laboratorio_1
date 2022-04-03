@@ -40,8 +40,8 @@ int main(void) {
 		response =
 				options(
 						"Bienvenidx a nuestro programa. Elija entre nuestras opciones para comenzar el proceso. \n"
-								"1-Ingresar kilometros a viajar: \n2-Ingresar precio de vuelos:\n"
-								"3-Calcular los costos.\n4-Informar resultados.\n5-Cargar nuestros datos.\n6-Salir\n");
+								"1-Ingresar kilometros a viajar. \n2-Ingresar precio de vuelos:\n"
+								"3-Calcular los costos.\n4-Informar resultados.\n5-Cargar nuestros datos.\n6-Salir");
 		switch (response) {
 		case 1:
 			printf("Ingrese kilometros");
@@ -57,7 +57,7 @@ int main(void) {
 			break;
 		case 3:
 			if(hardCodedValue == 1){
-				printf("Se han detectado valores cargados forzosamente. \nIntentelo nuevamente cargando sus propios valores (Opcion 1).\n");
+				printf("Se han detectado valores cargados forzosamente. \nIntentelo cargando sus propios valores (Opcion 1).\n");
 				x = 0;
 				y = 0;
 				z = 0;
@@ -142,6 +142,10 @@ int main(void) {
 			printf("Por favor ingrese un numero del 1 al 6.\n");
 		}
 	}
+
+	//PEDIDO DE DATOS
+
+	//AEROLINEAS
 
 	return EXIT_SUCCESS;
 }

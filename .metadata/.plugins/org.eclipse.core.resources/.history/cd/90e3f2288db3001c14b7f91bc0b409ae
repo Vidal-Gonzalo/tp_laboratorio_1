@@ -40,28 +40,23 @@ int main(void) {
 		response =
 				options(
 						"Bienvenidx a nuestro programa. Elija entre nuestras opciones para comenzar el proceso. \n"
-								"1-Ingresar kilometros a viajar: \n2-Ingresar precio de vuelos:\n"
-								"3-Calcular los costos.\n4-Informar resultados.\n5-Cargar nuestros datos.\n6-Salir\n");
+								"1-Ingresar kilometros a viajar. \n2-Ingresar precio de vuelos: (Aerolineas = y, Latam = z)\n"
+								"3-Calcular los costos.\n4-Informar resultados.\n5-Cargar nuestros datos.\n6-Salir");
 		switch (response) {
 		case 1:
 			printf("Ingrese kilometros");
 			scanf("%f", &x);
-			printf("¡Kilometros cargados correctamente! \nProceda a cargar los precios de vuelos (Opcion 2).\n");
 			break;
 		case 2:
 			printf("Ingrese el precio del vuelo con Aerolineas");
 			scanf("%f", &y);
 			printf("Ingrese el precio del vuelo con Latam");
 			scanf("%f", &z);
-			printf("\n¡Precios cargados correctamente! Proceda a calcularlos (Opcion 3).\n");
 			break;
 		case 3:
 			if(hardCodedValue == 1){
-				printf("Se han detectado valores cargados forzosamente. \nIntentelo nuevamente cargando sus propios valores (Opcion 1).\n");
-				x = 0;
-				y = 0;
-				z = 0;
-				hardCodedValue = 0;
+				printf("Se han detectado valores cargados forzosamente. \nIntentelo de nuevo.");
+				x, y, z = 0;
 				break;
 			}
 			if (x == 0 || y == 0 || z == 0) {
@@ -89,7 +84,7 @@ int main(void) {
 				} else {
 					priceDifference = z - y;
 				}
-				printf("¡Cálculos realizados! Proceda a ver los resultados (Opcion 4).\n");
+				printf("¡Cálculos realizados! Presione la tecla 4 para ver los resultados.");
 				break;
 			}
 
@@ -112,7 +107,7 @@ int main(void) {
 						priceDifference);
 				break;
 			} else {
-				printf("Por favor, calcule primero los datos ingresados. (Opcion 3)\n");
+				printf("Por favor, calcule los datos ingresados. (Opcion 3)\n");
 				break;
 			}
 
@@ -136,12 +131,16 @@ int main(void) {
 
 			break;
 		case 6:
-			printf("\n¡Gracias por usar nuestro programa!\n");
+			printf("¡Gracias por usar nuestro programa!");
 			break;
 		default:
-			printf("Por favor ingrese un numero del 1 al 6.\n");
+			printf("Por favor ingrese un numero del 1 al 6.");
 		}
 	}
+
+	//PEDIDO DE DATOS
+
+	//AEROLINEAS
 
 	return EXIT_SUCCESS;
 }

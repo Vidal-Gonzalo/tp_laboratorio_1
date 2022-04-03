@@ -1,0 +1,120 @@
+/*
+ ============================================================================
+ Name        : TP_1.c
+ Author      : Gonzalo Vidal - División H
+ Version     :
+ Copyright   : Your copyright notice
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "calculations.h"
+
+#define DISCOUNT 10
+#define INTEREST 25
+#define BITCOIN 4606954.55
+
+int main(void) {
+	setbuf(stdout, NULL);
+	//DECLARACION DE VARIABLES
+	float x;
+	float y;
+	float z;
+	float discountPriceAerolineas;
+	float discountPriceLatam;
+	float interestPriceAerolineas;
+	float interestPriceLatam;
+	float bitcoinPriceAerolineas;
+	float bitcoinPriceLatam;
+	float priceDifference;
+	int response;
+
+
+	while(response != 6){
+		response =
+					options(
+							"Bienvenidx a nuestro programa. Elija entre nuestras opciones para comenzar el proceso. "
+									"1-Ingresar kilometros a viajar. \n 2-Ingresar precio de vuelos: (Aerolineas = y, Latam = z"
+									"3-Calcular los costos. \n 4-Informar resultados. \n 5-Cargar nuestros datos. \n 6-Salir");
+		switch (response) {
+		case 1:
+			printf("Ingrese kilometros");
+			scanf("%f", &x);
+			break;
+		case 2:
+			printf("Ingrese el precio del vuelo con Aerolineas");
+			scanf("%f", &y);
+			printf("Ingrese el precio del vuelo con Latam");
+			scanf("%f", &z);
+			break;
+		case 3:
+			/**********DESCUENTO*************/
+			discountPriceAerolineas = resultWithDiscount(y, DISCOUNT);
+			/**********AUMENTO*************/
+			interestPriceAerolineas = resultWithInterest(y, INTEREST);
+			/**********BITCOIN*************/
+			bitcoinPriceAerolineas = bitcoinConverter(y, BITCOIN);
+
+			//LATAM
+			/**********DESCUENTO*************/
+			discountPriceLatam = resultWithDiscount(z, DISCOUNT);
+			/**********AUMENTO*************/
+			interestPriceLatam = resultWithInterest(z, INTEREST);
+			/**********BITCOIN*************/
+			//DIFFERENCE
+
+			bitcoinPriceLatam = bitcoinConverter(z, BITCOIN);
+			if (y > z) {
+				priceDifference = y - z;
+			} else {
+				priceDifference = z - y;
+			}
+			break;
+		case 4:
+			//MENSAJES
+			printf("Precio con descuento con Aerolineas: %.2f \n",
+					discountPriceAerolineas);
+			printf("Precio con descuento con Latam: %.2f \n", discountPriceLatam);
+			printf("Precio con interés con Aerolineas: %.2f \n",
+					interestPriceAerolineas);
+			printf("Precio con interés con Latam: %.2f \n", interestPriceLatam);
+			printf("Precio en BTC con Aerolineas: %.5f \n", bitcoinPriceAerolineas);
+			printf("Precio en BTC con Latam: %.5f \n", bitcoinPriceLatam);
+			printf("La diferencia de precio entre Aerolineas y Latam es de: %.2f",
+					priceDifference);
+			break;
+		case 5:
+			x = 7090;
+			y = 162965;
+			z = 159339;
+			discountPriceAerolineas = resultWithDiscount(y, DISCOUNT);
+			interestPriceAerolineas = resultWithInterest(y, INTEREST);
+			bitcoinPriceAerolineas = bitcoinConverter(y, BITCOIN);
+
+			discountPriceLatam = resultWithDiscount(z, DISCOUNT);
+			interestPriceLatam = resultWithInterest(z, INTEREST);
+			bitcoinPriceLatam = bitcoinConverter(z, BITCOIN);
+
+			printf(
+					"KMs Ingresados: %f \n \n Precio Aerolineas: %f \n a)Precio con tarjeta de debito: %f \n b)Precio con tarjeta de credito: %f \n c)Precio pagando con Bitcoin: %f",
+					x, y, discountPriceAerolineas, interestPriceAerolineas,
+					bitcoinPriceAerolineas);
+
+			break;
+		case 6:
+			printf("¡Gracias por usar nuestro programa!");
+		default:
+			printf("Por favor ingrese un numero del 1 al 6.");
+		}
+	}
+
+	//PEDIDO DE DATOS
+
+	//AEROLINEAS
+
+
+
+
+	return EXIT_SUCCESS;
+}

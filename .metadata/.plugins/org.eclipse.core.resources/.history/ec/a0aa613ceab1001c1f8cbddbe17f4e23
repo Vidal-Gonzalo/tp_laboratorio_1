@@ -1,0 +1,31 @@
+/*
+ ============================================================================
+ Name        : TP_1.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DESCUENTO 10
+#define INTERES 25
+#define BITCOIN 4606954.55
+
+int main(void) {
+	setbuf(stdout, NULL);
+
+	float precioAerolineas, porcentajeDescuento;
+	printf("Ingresa el precio original: ");
+	scanf("%f", &precioAerolineas);
+	printf("Ingresa el porcentaje de descuento: ");
+	scanf("%f", &porcentajeDescuento);
+
+	float descuento = precioAerolineas * (porcentajeDescuento / 100);
+	float precioConDescuento = precioAerolineas - descuento;
+	printf("Precio con descuento: %0.2f", precioConDescuento);
+	return EXIT_SUCCESS;
+}

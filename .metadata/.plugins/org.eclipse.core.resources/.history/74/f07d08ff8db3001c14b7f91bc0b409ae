@@ -40,24 +40,24 @@ int main(void) {
 		response =
 				options(
 						"Bienvenidx a nuestro programa. Elija entre nuestras opciones para comenzar el proceso. \n"
-								"1-Ingresar kilometros a viajar: \n2-Ingresar precio de vuelos:\n"
-								"3-Calcular los costos.\n4-Informar resultados.\n5-Cargar nuestros datos.\n6-Salir\n");
+								"1-Ingresar kilometros a viajar. \n2-Ingresar precio de vuelos:\n"
+								"3-Calcular los costos.\n4-Informar resultados.\n5-Cargar nuestros datos.\n6-Salir");
 		switch (response) {
 		case 1:
 			printf("Ingrese kilometros");
 			scanf("%f", &x);
-			printf("¡Kilometros cargados correctamente! \nProceda a cargar los precios de vuelos (Opcion 2).\n");
+			printf("¡Kilometros cargados correctamente! \nProceda a cargar los precios de vuelos (Opcion 2).");
 			break;
 		case 2:
 			printf("Ingrese el precio del vuelo con Aerolineas");
 			scanf("%f", &y);
 			printf("Ingrese el precio del vuelo con Latam");
 			scanf("%f", &z);
-			printf("\n¡Precios cargados correctamente! Proceda a calcularlos (Opcion 3).\n");
+			printf("\n¡Precios cargados correctamente! Proceda a calcularlos (Opcion 3).");
 			break;
 		case 3:
 			if(hardCodedValue == 1){
-				printf("Se han detectado valores cargados forzosamente. \nIntentelo nuevamente cargando sus propios valores (Opcion 1).\n");
+				printf("Se han detectado valores cargados forzosamente. \nIntentelo cargando sus propios valores (Opcion 1).");
 				x = 0;
 				y = 0;
 				z = 0;
@@ -89,7 +89,7 @@ int main(void) {
 				} else {
 					priceDifference = z - y;
 				}
-				printf("¡Cálculos realizados! Proceda a ver los resultados (Opcion 4).\n");
+				printf("¡Cálculos realizados! Proceda a ver los resultados (Opcion 4).");
 				break;
 			}
 
@@ -142,6 +142,10 @@ int main(void) {
 			printf("Por favor ingrese un numero del 1 al 6.\n");
 		}
 	}
+
+	//PEDIDO DE DATOS
+
+	//AEROLINEAS
 
 	return EXIT_SUCCESS;
 }
