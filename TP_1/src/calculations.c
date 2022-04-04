@@ -23,15 +23,21 @@ float resultWithInterest(float number1, int defaultInterest){
 	return result;
 }
 
+float pricePerKm(float kilometer, float number1){
+	float result;
+	result = number1 / kilometer;
+	return result;
+}
+
 float bitcoinConverter(float number1, float bitcoinPrice){
 	float result;
 	result = number1 / bitcoinPrice;
 	return result;
 }
 
-int options(char* message){
+int options(char* message, float number1, float number2, float number3){
 	int response;
-	printf(message);
+	printf(message, number1, number2, number3);
 	scanf("%d", &response);
 	return response;
 }
