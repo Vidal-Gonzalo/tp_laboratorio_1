@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "calculations.h"
+#include "askInformation.h"
 
 #define DISCOUNT 10
 #define INTEREST 25
@@ -48,16 +49,13 @@ int main(void) {
 						x, y, z);
 		switch (response) {
 		case 1:
-			printf("Ingrese kilometros\n");
-			scanf("%f", &x);
+			getInfo("Ingrese kilometros: ", &x);
 			printf(
 					"¡Kilometros cargados correctamente! \nProceda a cargar los precios de vuelos (Opcion 2).\n");
 			break;
 		case 2:
-			printf("Precio vuelo Aerolineas:\n");
-			scanf("%f", &y);
-			printf("Precio vuelo Latam:\n");
-			scanf("%f", &z);
+			getInfo("Precio vuelo Aerolineas:\n", &y);
+			getInfo("Precio vuelo Latam:\n", &z);
 			printf(
 					"\n¡Precios cargados correctamente! Proceda a calcularlos (Opcion 3).\n");
 			break;
@@ -87,11 +85,7 @@ int main(void) {
 				/**********PRICE P/KM**********/
 				kilometerPriceLatam = pricePerKm(x, z);
 				//DIFFERENCE
-				if (y > z) {
-					priceDifference = y - z;
-				} else {
-					priceDifference = z - y;
-				}
+				priceDifference = differenceOfNumbers(y, z);
 				printf(
 						"¡Cálculos realizados! Proceda a ver los resultados (Opcion 4).\n");
 				break;
@@ -121,7 +115,7 @@ int main(void) {
 				break;
 			} else {
 				printf(
-						"Por favor, calcule primero los datos ingresados (Opcion 3).\n");
+						"Por favor, calcule primero los datos ingresados. (Opcion 3).\n");
 				break;
 			}
 
@@ -139,11 +133,8 @@ int main(void) {
 			bitcoinPriceLatam = bitcoinConverter(z, BITCOIN);
 			kilometerPriceLatam = pricePerKm(x, z);
 
-			if (y > z) {
-				priceDifference = y - z;
-			} else {
-				priceDifference = z - y;
-			}
+			priceDifference = differenceOfNumbers(y, z);
+
 			printf(
 					"KMs Ingresados: %.2f\n\nPrecio Aerolineas: %.2f \na)Precio con tarjeta de debito: %.2f\nb)Precio con tarjeta de credito: %.2f\nc)Precio pagando con Bitcoin: %.2f\nPrecio unitario: %.2f\n\n" "Precio Latam: %.2f\na)Precio con tarjeta de debito: %.2f\nb)Precio con tarjeta de credito: %.2f\nc)Precio pagando con Bitcoin: %.2f\nPrecio unitario: %.2f \nLa diferencia de precio es: %.2f",
 					x, y, discountPriceAerolineas, interestPriceAerolineas,

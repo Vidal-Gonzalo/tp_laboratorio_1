@@ -19,7 +19,7 @@ float resultWithInterest(float number1, int defaultInterest){
 	float interest;
 	float result;
 	interest = number1 * ((float)defaultInterest / 100);
-	result = number1 - interest;
+	result = number1 + interest;
 	return result;
 }
 
@@ -35,10 +35,13 @@ float bitcoinConverter(float number1, float bitcoinPrice){
 	return result;
 }
 
-int options(char* message, float number1, float number2, float number3){
-	int response;
-	printf(message, number1, number2, number3);
-	scanf("%d", &response);
-	return response;
+float differenceOfNumbers (float number1, float number2){
+	float result;
+	if(number1 > number2){
+		result = number1 - number2;
+	} else {
+		result = number2 - number1;
+	}
+	return result;
 }
 
