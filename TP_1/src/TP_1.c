@@ -49,13 +49,13 @@ int main(void) {
 						x, y, z);
 		switch (response) {
 		case 1:
-			getInfo("Ingrese kilometros: ", &x);
+			getInfo("Ingrese kilometros: ", &x, 3, 0, "\nHa habido un error. Intentelo nuevamente.\n");
 			printf(
 					"¡Kilometros cargados correctamente! \nProceda a cargar los precios de vuelos (Opcion 2).\n");
 			break;
 		case 2:
-			getInfo("Precio vuelo Aerolineas:\n", &y);
-			getInfo("Precio vuelo Latam:\n", &z);
+			getInfo("Precio vuelo Aerolineas: \n", &y, 3, 0, "\nHa habido un error. Intentelo nuevamente.\n");
+			getInfo("Precio vuelo Latam: \n", &z, 3, 0, "\nHa habido un error. Intentelo nuevamente.\n");
 			printf(
 					"\n¡Precios cargados correctamente! Proceda a calcularlos (Opcion 3).\n");
 			break;
