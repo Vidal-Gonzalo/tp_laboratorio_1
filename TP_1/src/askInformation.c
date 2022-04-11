@@ -17,7 +17,7 @@ int getInfo(char* message, float *number1, int retries, int min, char* error){
 		scanfReturn = scanf("%d", &aux);
 		do{
 			if(scanfReturn != 1 || aux < min){
-				printf("%s. Reintentos restantes: (%d)\n", error, retries);
+				printf("%sReintentos restantes: (%d)\n", error, retries);
 				scanfReturn = scanf("%d", &aux);
 				retries--;
 			} else {
@@ -26,13 +26,29 @@ int getInfo(char* message, float *number1, int retries, int min, char* error){
 				r = 0;
 			}
 		}while(retries > 0);
+		if(r == -1){
+			printf("Reintentos agotados. Intentelo nuevamente");
+		}
 	}
 	return r;
 }
 
-int options(char* message, float number1, float number2, float number3){
-	int response;
-	printf(message, number1, number2, number3);
-	scanf("%d", &response);
-	return response;
+int options(char* message,int *option,  float number1, float number2, float number3, int min, int max){ //Remasterizar función
+	int r = -1;
+	int aux;
+	int scanfReturn;
+
+	if(message != NULL && option != NULL){
+		printf(message, number1, number2, number3);
+		scanfReturn = scanf("%d", &aux);
+		if(scanfReturn != 1 || aux > max || aux < min){
+			printf("Ha habido un error. Intentelo de nuevo\n");
+		} else {
+			*option = aux;
+			r = 0;
+		}
+	}
+
+	return r;
+
 }
