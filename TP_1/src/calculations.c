@@ -6,12 +6,11 @@
  */
 
 #include "calculations.h"
+#include "askInformation.h"
 #define DISCOUNT 10
 #define INTEREST 25
 #define BITCOIN 4606954.55
 
-//Sacar void
-//Meter todos los calculos en una función? ---> A tener en cuenta / Intentarlo
 int resultWithDiscount(float number1, int defaultDiscount, float *result) {
 	int r = -1;
 	if (number1 == 0 || defaultDiscount == 0) {
@@ -85,9 +84,10 @@ int differenceOfNumbers(float number1, float number2, float *result) {
 	return r;
 }
 
-int makeDifferentCalculations(float number1, float number2, float number3, float *result1, float *result2, float *result3,
-		float *result4, float *result5, float *result6, float *result7,
-		float *result8, float *result9) {
+int makeDifferentCalculations(float number1, float number2, float number3,
+		float *result1, float *result2, float *result3, float *result4,
+		float *result5, float *result6, float *result7, float *result8,
+		float *result9) {
 	int r = -1;
 	if (number1 > 0 && number2 > 0 && number3 > 0) {
 		r = 0;
@@ -98,13 +98,18 @@ int makeDifferentCalculations(float number1, float number2, float number3, float
 		bitcoinConverter(number2, BITCOIN, result4);
 
 		/***Latam***/
-		resultWithDiscount(number3, DISCOUNT,result5);
-		resultWithInterest(number3, INTEREST,result6);
+		resultWithDiscount(number3, DISCOUNT, result5);
+		resultWithInterest(number3, INTEREST, result6);
 		pricePerKm(number3, number1, result7);
 		bitcoinConverter(number3, BITCOIN, result8);
-		differenceOfNumbers(number1, number2, result9);
+		differenceOfNumbers(number2, number3, result9);
+		printMessage(
+				"¡Cálculos realizados! Proceda a ver los resultados (Opcion 4).",
+				1);
 	} else {
-		printf("%f %f %f", number1, number2, number3);
+		printMessage(
+				"Ha habido un error. Por favor, revise que se hayan ingresado correctamente los precios de vuelos.",
+				1);
 	}
 	return r;
 }

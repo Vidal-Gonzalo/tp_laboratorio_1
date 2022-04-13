@@ -34,7 +34,7 @@ int getInfo(char *message, float *number1, int retries, int min, char *error) {
 }
 
 int options(char *message, int *option, float number1, float number2,
-		float number3, int min, int max) { //Remasterizar función
+		float number3, int min, int max) {
 	int r = -1;
 	int aux;
 	int scanfReturn;
@@ -54,7 +54,6 @@ int options(char *message, int *option, float number1, float number2,
 
 }
 
-//Función de imprimir resultados
 int printResults(float number1, float number2, float number3, float result1,
 		float result2, float result3, float result4, float result5,
 		float result6, float result7, float result8, float result9) {
@@ -65,45 +64,45 @@ int printResults(float number1, float number2, float number3, float result1,
 				"KMs Ingresados: %.2f\n\nPrecio Aerolineas: $%.2f \na)Precio con tarjeta de debito: $%.2f\nb)Precio con tarjeta de credito: $%.2f\nc)Precio pagando con Bitcoin:$ %.2f\nPrecio unitario: $%.2f\n\n" "Precio Latam: $%.2f\na)Precio con tarjeta de debito:$ %.2f\nb)Precio con tarjeta de credito: $%.2f\nc)Precio pagando con Bitcoin: $%.2f\nPrecio unitario: $%.2f \nLa diferencia de precio es: $%.2f",
 				number1, number2, result1, result2, result3, result4, number3,
 				result5, result6, result7, result8, result9);
+	} else {
+		printMessage("Ha habido un error. Intentelo nuevamente, por favor.", 2);
 	}
 	return r;
 }
 
 int printMessage(char *message, int size) {
 	int r = -1;
-	if (message != NULL) {
-		if (size == 3) {
-			printf(
-					"\n\n******************************\n%s\n\n******************************\n\n",
-					message);
+	if (message != NULL && size > 0) {
+		r = 0;
+		if (size == 1) {
+			printf("\n**********\n%s\n**********\n", message);
+
 		} else {
 			if (size == 2) {
 				printf("\n********************\n\n%s\n\n********************\n",
 						message);
 			} else {
-				printf("\n**********\n%s\n**********\n", message);
+				printf(
+						"\n\n******************************\n%s\n\n******************************\n\n",
+						message);
 			}
 		}
 	}
 	return r;
 }
 
-int confirmation(int max, int min) {
+int confirmation() {
 	int r = -1;
-	int aux;
-	int scanfReturn;
+	int aux = 0;
+	int scanfReturn = 0;
 	do {
 		printMessage(
 				"¿Esta seguro que desea realizar esta operacion? Sus datos se eliminarán. Si = 1 / Otro numero = No",
 				2);
 		scanfReturn = scanf("%d", &aux);
-	} while (scanfReturn != 1 && aux < min && aux > max);
-	if(aux == 1){
+	} while (scanfReturn != 1);
+	if (aux == 1) {
 		r = 1;
-	} else {
-		if(aux == 0){
-			r = 0;
-		}
 	}
 	return r;
 }

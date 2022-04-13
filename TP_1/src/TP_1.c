@@ -80,20 +80,14 @@ int main(void) {
 							2);
 					break;
 				} else {
-					calculated = 1;
 					if (makeDifferentCalculations(x, y, z,
 							&discountPriceAerolineas, &interestPriceAerolineas,
 							&bitcoinPriceAerolineas, &kilometerPriceAerolineas,
 							&discountPriceLatam, &interestPriceLatam,
 							&bitcoinPriceLatam, &kilometerPriceLatam,
 							&priceDifference) != -1) {
-						printMessage(
-								"¡Cálculos realizados! Proceda a ver los resultados (Opcion 4).",
-								1);
+						calculated = 1;
 					} else {
-						printMessage(
-								"Ha habido un error. Por favor, revise que se hayan ingresado correctamente los precios de vuelos.",
-								1);
 						calculated = 0;
 					}
 
@@ -110,28 +104,22 @@ int main(void) {
 
 				if (calculated == 1) {
 					//MESSAGES
-					if (printResults(x, y, z, discountPriceAerolineas,
+					printResults(x, y, z, discountPriceAerolineas,
 							interestPriceAerolineas, bitcoinPriceAerolineas,
 							kilometerPriceAerolineas, discountPriceLatam,
 							interestPriceLatam, bitcoinPriceLatam,
-							kilometerPriceLatam, priceDifference) != -1) {
-						break;
-					} else {
-						printMessage(
-								"Ha habido un error. Intentelo nuevamente, por favor.",
-								2);
-					}
-
+							kilometerPriceLatam, priceDifference);
+					calculated = 0;
 					break;
 				} else {
 					printMessage(
-							"Por favor, calcule primero los datos ingresados. (Opcion 3).",
+							"Por favor, siempre calcule primero los datos ingresados. (Opcion 3).",
 							2);
 					break;
 				}
 
 			case 5:
-				if (confirmation(1, 0) != 1) {
+				if (confirmation() != 1) {
 					break;
 				} else {
 					x = 7090;
@@ -153,16 +141,9 @@ int main(void) {
 							z = 0;
 							break;
 						} else {
-							printMessage(
-									"Ha habido un error a la hora de imprimir los resultados.",
-									2);
 							break;
 						}
-
 					} else {
-						printMessage(
-								"Ha habido un error a la hora de calcular los precios.",
-								2);
 						break;
 					}
 				}
