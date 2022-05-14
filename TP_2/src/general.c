@@ -28,6 +28,27 @@ int utn_getNumero(char message[], char messageError[], int min, int retries,
 	return r;
 }
 
+int utn_getNumeroWithMax(char message[], char messageError[], int min, int max,
+		int retries, int *number1) {
+	int r = -1;
+	int auxInt;
+
+	if (message != NULL && min >= 0 && max >= 1 && messageError != NULL
+			&& number1 != NULL && retries > 0) {
+		printf("%s", message);
+		do {
+			if (getInt(&auxInt) == 0 && auxInt >= min && auxInt <= max) {
+				*number1 = auxInt;
+				r = 0;
+				break;
+			}
+			retries--;
+			printf("%s", messageError);
+		} while (retries > 0);
+	}
+	return r;
+}
+
 int utn_getNumeroFlotante(char message[], char messageError[], int min,
 		int retries, float *number1) {
 	int r = -1;
@@ -50,19 +71,27 @@ int utn_getNumeroFlotante(char message[], char messageError[], int min,
 	return r;
 }
 
-int getString(char *cadena, int longitud, char message[], char messageError[]) {
+//ACORDATE DE PONER RETRIES
+int getString(char *newArray, int size, char message[], char messageError[],
+		int retries) {
 	int r = -1;
 	char aux[4096];
 
-	if (cadena != NULL && longitud > 0) {
-		fflush(stdin);
+	if (newArray != NULL && size > 0 && retries > 0) {
 		printf("%s", message);
-		if (myGets(aux, 4096) == 0) {
-			strncpy(cadena, aux, longitud);
-			r = 0;
-		} else {
+		fflush(stdin);
+		do {
+			if (myGets(aux, 4096) == 0) {
+				strncpy(newArray, aux, size);
+				r = 0;
+				break;
+			}
+			retries--;
 			printf("%s", messageError);
-		}
+			fflush(stdin);
+
+		} while (retries > 0);
+
 	}
 	return r;
 }
@@ -97,14 +126,20 @@ int esNumerica(char arrayNum[]) {
 	return r;
 }
 
-int myGets(char cadena[], int longitud) { //Hacer el getFloat
+int myGets(char cadena[], int longitud) {
 	int r = -1;
-	char aux[4096]; //esto es un buffer
-	aux[strlen(aux) - 1] = '\0';
-	if (cadena != NULL && longitud > 0
-			&& fgets(aux, sizeof(aux), stdin) == aux) {
-		r = 0;
-		strncpy(cadena, aux, longitud);
+	char aux[4096];
+	if (cadena != NULL && longitud > 0) {
+		fflush(stdin);
+		if (fgets(aux, sizeof(aux), stdin) != NULL) {
+			if (aux[strnlen(aux, sizeof(aux)) - 1] == '\n') {
+				aux[strnlen(aux, sizeof(aux)) - 1] = '\0';
+			}
+		}
+		if (strnlen(aux, sizeof(aux)) <= longitud) {
+			strncpy(cadena, aux, longitud);
+			r = 0;
+		}
 	}
 	return r;
 }
@@ -114,32 +149,11 @@ int getFloat(float *number1) {
 	char aux[64];
 
 	if (number1 != NULL) {
-		if (myGets(aux, sizeof(aux)) == 0 && isFloat(aux) == 0) {
+		if (myGets(aux, sizeof(aux)) == 0) {
 			*number1 = atof(aux);
 			r = 0;
-		}
-	}
-	return r;
-}
-
-int isFloat(char cadena[]) {
-	int i = 0;
-	int r = -1;
-	int contadorPuntos = 0;
-
-	if (cadena != NULL && strlen(cadena) > 0) {
-		for (i = 0; cadena[i] != '\0'; i++) {
-			if ((i == 0 && cadena[i] == '-') || cadena[i] == '+') {
-				continue;
-			}
-			if (cadena[i] < '0' || cadena[i] > '9') {
-				if (cadena[i] == '.' && contadorPuntos == 0) {
-					contadorPuntos++;
-				} else {
-					r = 0;
-					break;
-				}
-			}
+		} else {
+			printf("error en isFloat");
 		}
 	}
 	return r;
@@ -159,15 +173,24 @@ int printMessage(char *message, int type) {
 		if (type == 2) {
 			r = 0;
 			printf("\n%s*****", asterisks);
+			fflush(stdin);
 			puts("");
+			fflush(stdin);
 			printf("\n*  %s  *\n", message);
+			fflush(stdin);
 			puts("");
+			fflush(stdin);
 			printf("%s*****\n\n", asterisks);
+			fflush(stdin);
 		} else {
 			if (type == 1) {
+				fflush(stdin);
 				printf("\n%s\n", message);
+				fflush(stdin);
 				printf("%s", asterisks);
+				fflush(stdin);
 				puts("");
+				fflush(stdin);
 			}
 		}
 
@@ -205,3 +228,4 @@ int confirmation(char message[], char messageError[]) {
 
 	return r;
 }
+
