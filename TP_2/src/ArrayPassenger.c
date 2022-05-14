@@ -13,6 +13,13 @@ static int Passenger_getUniqueId() {
 	return idAI++;
 }
 
+/** \brief print the content of one element of Passenger
+*
+* \param list Passenger
+* \return int
+*
+*/
+
 void Passenger_printOne(Passenger s) {
 	printf(
 			"ID %d\nNombre: %s\nApellido: %s\nCodigo de vuelo: %s\nPrecio: %.2f\n",
@@ -26,12 +33,20 @@ void Passenger_printOne(Passenger s) {
 			puts("Clase: Alta\n");
 		}
 	}
-	if (s.statusFlight == 1) {
+	if (s.statusFlight == 2) {
 		puts("Estado de vuelo: ACTIVO\n");
 	} else {
 		puts("Estado de vuelo: INACTIVO\n");
 	}
 }
+
+/** \brief print the content of passengers array
+*
+* \param list Passenger*
+* \param length int
+* \return int
+*
+*/
 
 int Passenger_printPassengers(Passenger passengersList[], int size) {
 	int r = -1;
@@ -60,6 +75,15 @@ int Passenger_printPassengers(Passenger passengersList[], int size) {
 	return r;
 }
 
+/** \brief To indicate that all position in the array are empty,
+* this function put the flag (isEmpty) in TRUE in all
+* position of the array
+* \param list Passenger* Pointer to array of passenger
+* \param len int Array length
+* \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+*
+*/
+
 int Passenger_initializePassengers(Passenger *passengerList, int size) {
 	int r = -1;
 	int i;
@@ -71,6 +95,14 @@ int Passenger_initializePassengers(Passenger *passengerList, int size) {
 	}
 	return r;
 }
+
+/** \brief Search free space in array list, load the no-generic data of the passenger, gives him an ID and
+ *  add passenger's data.
+* \param list Passenger* Pointer to array of passenger
+* \param len int Array length
+* \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+*
+*/
 
 int Passenger_Membership(Passenger passengerList[], int size) {
 	int r = -1;
@@ -130,6 +162,12 @@ int addPassenger(Passenger *list, int len, int id, char name[], char lastname[],
 	return r;
 }
 
+/** \brief modifies one passenger of the array
+ * \param list passenger*
+ * \param len int
+ * \return int Return (-1) if Error [Invalid length or NULL pointer or without
+ free space] - (0) if Ok*/
+
 int Passenger_Edit(Passenger passengerList[], int size) {
 	int r = -1;
 	int indexToModify;
@@ -170,6 +208,15 @@ int Passenger_Edit(Passenger passengerList[], int size) {
 	return r;
 }
 
+/** \brief Remove a Passenger by Id (put isEmpty Flag in 1)
+*
+* \param list Passenger*
+* \param len int
+* \param id int
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a passenger] - (0) if Ok
+*
+*/
 int Passenger_Baja(Passenger passengerList[], int size) {
 	int r = -1;
 	int indexLow;
@@ -208,6 +255,16 @@ int Passenger_Baja(Passenger passengerList[], int size) {
 	return r;
 }
 
+
+/** \brief gives options to modify to the user.
+*
+* \param list Passenger*
+* \param len int
+* \param id int
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a passenger] - (0) if Ok
+*
+*/
 Passenger Passenger_ModificarUno(Passenger s) {
 	int opcion;
 	do {
@@ -251,12 +308,22 @@ Passenger Passenger_ModificarUno(Passenger s) {
 	return s;
 }
 
+/** \brief Search an especific space in the array
+*
+* \param list Passenger*
+* \param len int
+* \param id status (to search)
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a passenger] - (0) if Ok
+*
+*/
+
 int Passenger_SearchSpace(Passenger passengerList[], int size, int status) {
 	int r = -1;
 	int i;
 
 	if (passengerList != NULL && size > 0) {
-		for (i = 0; i < size; i++) {
+		for (i = 0; i <= size; i++) {
 			if (passengerList[i].isEmpty == status) {
 				r = i;
 				break;
@@ -265,6 +332,16 @@ int Passenger_SearchSpace(Passenger passengerList[], int size, int status) {
 	}
 	return r;
 }
+
+/** \brief Search an especific flight status in the array
+*
+* \param list Passenger*
+* \param len int
+* \param id statusFlight (to search)
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a passenger] - (0) if Ok
+*
+*/
 
 int Passenger_SearchFlightStatus(Passenger passengerList[], int size,
 		int statusFlight) {
@@ -282,6 +359,12 @@ int Passenger_SearchFlightStatus(Passenger passengerList[], int size,
 	return r;
 }
 
+/** \brief Loads non-generic data to an Passenger auxiliar and returns it
+*
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a passenger] - (0) if Ok
+*
+*/
 
 Passenger Passenger_LoadPassenger() {
 	Passenger auxiliar;
@@ -322,6 +405,16 @@ int Passenger_SearchIndexPerId(Passenger passengerList[], int size, int ID) {
 
 	return r;
 }
+
+/** \brief Sort the elements in the array of passengers, the argument order
+indicate UP or DOWN order
+*
+* \param list Passenger*
+* \param len int
+* \param order int [1] indicate UP - [0] indicate DOWN
+* \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+*
+*/
 
 int Passenger_Sort(Passenger passengersList[], int size, int order) {
 	int r = -1;
@@ -395,6 +488,16 @@ int Passenger_Sort(Passenger passengersList[], int size, int order) {
 	return r;
 }
 
+/** \brief Sort the elements in the array of passengers, the argument order
+indicate UP or DOWN order
+*
+* \param list Passenger*
+* \param len int
+* \param order int [1] indicate UP - [0] indicate DOWN
+* \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+*
+*/
+
 int Passenger_AveragePrice(Passenger passengerList[], int size) {
 	int r = -1;
 	float priceAmount;
@@ -433,6 +536,16 @@ int Passenger_AveragePrice(Passenger passengerList[], int size) {
 	}
 	return r;
 }
+
+/** \brief Sort the elements in the array of passengers, the argument order
+indicate UP or DOWN order
+*
+* \param list Passenger*
+* \param len int
+* \param order int [1] indicate UP - [0] indicate DOWN
+* \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+*
+*/
 
 int Passenger_SortByFlightcode(Passenger passengersList[], int size, int order) {
 	int r = -1;

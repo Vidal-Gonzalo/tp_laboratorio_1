@@ -13,6 +13,16 @@ static int Flight_getUniqueId() {
 	return idAI++;
 }
 
+/** \brief Gives membership to a new passenger and to a new flight.
+ *
+ * \param list Passenger*
+ * \param lenPassenger int
+ *  * \param list Flight*
+ * \param lenFlight int
+ * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+ *
+ */
+
 int relationship_membershipPassengerAndFlight(Passenger passengerList[],
 		int passengersSize, Flight flightList[], int flightSize) {
 	int r = -1;
@@ -31,6 +41,16 @@ int relationship_membershipPassengerAndFlight(Passenger passengerList[],
 	return r;
 }
 
+/** \brief Gives membership to a new flight only if the flight code is not repeated.
+ *
+ * \param list Passenger*
+ * \param lenPassenger int
+ *  * \param list Flight*
+ * \param lenFlight int
+ * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+ *
+ */
+
 int relationship_membershipFlight(Flight flightList[], int flightSize,
 		Passenger passengersList[], int passengersSize) {
 	int r = -1;
@@ -45,8 +65,6 @@ int relationship_membershipFlight(Flight flightList[], int flightSize,
 		INACTIVE);
 		indexPassenger = Passenger_SearchFlightStatus(passengersList,
 				passengersSize, INPROCESS);
-		printf("Index passenger:%d\nIndexFlight:%d\n", indexPassenger,
-				indexFlight);
 		if (indexFlight != -1) {
 			if (indexFlight == 0) {
 				puts("¡Sos el primer pasajero de tu vuelo!\n");
@@ -59,7 +77,6 @@ int relationship_membershipFlight(Flight flightList[], int flightSize,
 				flightList[indexFlight] = auxFlight;
 			} else {
 				for (int i = 0; i < indexFlight; i++) {
-					printf("I: %d", i);
 					if (strcmp(flightList[i].flycode,
 							passengersList[indexPassenger].flycode) == 0) {
 						repeatedFlight = 1;
@@ -76,7 +93,6 @@ int relationship_membershipFlight(Flight flightList[], int flightSize,
 				} else {
 					printf("¡Tu vuelo te esta esperando!");
 					passengersList[indexPassenger].statusFlight = ACTIVE;
-					printf("\n%d", repeatedFlight);
 				}
 			}
 			r = 0;

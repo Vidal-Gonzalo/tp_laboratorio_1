@@ -43,7 +43,7 @@ int main(void) {
 			}
 			break;
 		case 2:
-			if (Passenger_SearchSpace(passengersList, MAX_PASSENGERS, OCCUPIED)
+			if (Passenger_SearchFlightStatus(passengersList, MAX_PASSENGERS, ACTIVE)
 					== 0) {
 				if (Passenger_Edit(passengersList, MAX_PASSENGERS) == 0) {
 					printMessage("Modificacion realizada", 2);
@@ -56,7 +56,7 @@ int main(void) {
 
 			break;
 		case 3:
-			if (Passenger_SearchSpace(passengersList, MAX_PASSENGERS, OCCUPIED)
+			if (Passenger_SearchFlightStatus(passengersList, MAX_PASSENGERS, ACTIVE)
 					== 0) {
 				if (Passenger_Baja(passengersList, MAX_PASSENGERS) == 0) {
 					printMessage("Baja realizada", 1);
@@ -69,7 +69,7 @@ int main(void) {
 
 			break;
 		case 4:
-			if (Passenger_SearchSpace(passengersList, MAX_PASSENGERS, OCCUPIED)
+			if (Passenger_SearchFlightStatus(passengersList, MAX_PASSENGERS, ACTIVE)
 					== 0) {
 				if (utn_getNumero(
 						"1)Listado de pasajeros ordenados alfabeticamente por apellido y tipo de pasajero\n2)Total y promedio de los pasajes y cuantos superan el precio promedio\n3)Listado de los pasajeros por Codigo de vuelo y estados de vuelos 'ACTIVO'\n4)Volver\n",
@@ -117,7 +117,7 @@ int main(void) {
 
 			break;
 		case 5:
-			if (Passenger_SearchSpace(passengersList, MAX_PASSENGERS, OCCUPIED)
+			if (Passenger_SearchFlightStatus(passengersList, MAX_PASSENGERS, ACTIVE)
 					== 0) {
 				if (Passenger_printPassengers(passengersList, MAX_PASSENGERS)
 						== 0) {

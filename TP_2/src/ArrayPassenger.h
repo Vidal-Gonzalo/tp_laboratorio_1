@@ -37,7 +37,6 @@ typedef struct {
 int addPassenger(Passenger *list, int len, int id, char name[], char lastname[],
 		float price, int typePassenger, char flycode[]);
 int Passenger_initializePassengers(Passenger PassengerList[], int size);
-void Passenger_printOne(Passenger s);
 int Passenger_printPassengers(Passenger passengersList[], int size);
 int Passenger_SearchSpace(Passenger PassengerList[], int size, int status);
 int Passenger_SearchFlightStatus(Passenger passengerList[], int size,
