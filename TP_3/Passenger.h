@@ -25,16 +25,17 @@ typedef struct {
 	char apellido[MAX_CHARS_LASTNAME];
 	float precio;
 	int tipoPasajero;
-	char codigoVuelo[MAX_CHARS_FLY_CODE]; //Falta statusflight
+	char codigoVuelo[MAX_CHARS_FLY_CODE];
+	int statusFlight; //Falta statusflight
 
 } Passenger;
 
 Passenger* Passenger_new();
 Passenger* Passenger_newParametrosTxt(char *id, char *nombre, char *apellido,
-		char *precio, char *tipoPasajero, char *codigoVuelo);
+		char *precio, char *tipoPasajero, char *codigoVuelo, char *statusFlight);
 
 Passenger* Passenger_newParametros(int *id, char *nombre, char *apellido,
-		float *precio, char *codigoVuelo, int *tipoPasajero);
+		float *precio, char *codigoVuelo, int *tipoPasajero, int *statusFlight);
 
 void Passenger_delete(Passenger *this); // --> free(this)
 
@@ -65,12 +66,24 @@ int Passenger_getPrecio(Passenger *this, float *precio);
 int Passenger_setPrecioTxt(Passenger *this, char *precio);
 int Passenger_getPrecioTxt(Passenger *this, char *precio);
 
+int Passenger_setStatusFlight(Passenger *this, int statusFlight);
+int Passenger_getStatusFlight(Passenger *this, int *statusFlight);
 
+int Passenger_setStatusFlightTxt(Passenger *this, char *statusFlight);
+int Passenger_getStatusFlightTxt(Passenger *this, char *statusFlight);
+
+//Estas van a otra biblioteca
+int Passenger_verifyTypePassengerTxt(char *typePassenger,
+		int *typePassengerVerified);
+int Passenger_verifyStatusFlightTxt(char *statusFlight,
+		int *statusFlightVerified);
 
 int Passenger_LoadPassenger(Passenger *this);
-void Passenger_printOne(Passenger* p);
+void Passenger_printOne(Passenger *p);
 int Passenger_printPassengers(LinkedList pArrayPassengers[], int size);
 int Passenger_SearchIndexPerId(Passenger passengerList[], int size, int ID);
-int Passenger_ModificarUno(Passenger* p);
+int Passenger_ModificarUno(Passenger *p);
 int Passenger_getUniqueId();
+int Passenger_readTypePassengerAndStatusFlight(int *typePassenger,
+		int *statusFlight, char *typePassengerTxt, char *statusFlightTxt);
 #endif /* PASSENGER_H_ */

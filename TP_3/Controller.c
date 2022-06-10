@@ -5,10 +5,6 @@
 #include "parser.h"
 #include "General.h"
 
-//Debería hacer una función que verifique en el archivo si hay datos antes de asignar un ID.
-//El ID va a estar en 0 hasta el punto 8 en el que deba guardar los datos. Ahí verifica si hay
-//pasajeros en la LL. Si hay, toma el último ID y le suma uno, sino se inicia en 1.
-
 /** \brief Carga los datos de los pasajeros desde el archivo data.csv (modo texto).
  *
  * \param path char*
@@ -30,8 +26,10 @@ int controller_loadFromText(char *path, LinkedList *pArrayListPassenger) {
 		}
 		pFile = fopen(path, "r");
 		if (pFile == NULL) {
-			printf("El archivo no existe.\n");
-			r = -3; //Archivo no existente
+
+			pFile = fopen(path, "w");
+			fclose(pFile);
+			r = 1;
 		} else {
 			if (parser_PassengerFromText(pFile, pArrayListPassenger) == 0) {
 				r = 0;
@@ -91,7 +89,7 @@ int controller_addPassenger(char *path, LinkedList *pArrayListPassenger) {
 			passenger = Passenger_newParametros(&auxPassenger.id,
 					auxPassenger.nombre, auxPassenger.apellido,
 					&auxPassenger.precio, auxPassenger.codigoVuelo,
-					&auxPassenger.tipoPasajero);
+					&auxPassenger.tipoPasajero, &auxPassenger.statusFlight);
 			puts("Pasajero añadido: \n");
 			Passenger_printOne(passenger);
 			ll_add(pArrayListPassenger, passenger);
@@ -231,20 +229,18 @@ int controller_ListPassenger(char *path, LinkedList *pArrayListPassenger) {
  */
 int controller_sortPassenger(char *path, LinkedList *pArrayListPassenger) {
 	int r = -1;
-	Passenger* firstAux;
-	Passenger* secondAux;
-	Passenger* thirdAux;
+	Passenger *firstAux;
+	Passenger *secondAux;
+	Passenger *thirdAux;
 
 	if (path != NULL && pArrayListPassenger != NULL) {
 
 		int linkedListLength = ll_len(pArrayListPassenger);
-		for(int i = 0; i < linkedListLength; i++){
-			firstAux = (Passenger*)ll_get(pArrayListPassenger, i);
-			printf("Compara %s con \n", firstAux->apellido);
-			for(int j = i+1; j < linkedListLength; j++){
-				secondAux = (Passenger*)ll_get(pArrayListPassenger, j);
-				printf("%s\n", secondAux->apellido);
-				if(strcmp(secondAux->apellido, firstAux->apellido) < 0){
+		for (int i = 0; i < linkedListLength; i++) {
+			firstAux = (Passenger*) ll_get(pArrayListPassenger, i);
+			for (int j = i + 1; j < linkedListLength; j++) {
+				secondAux = (Passenger*) ll_get(pArrayListPassenger, j);
+				if (strcmp(secondAux->codigoVuelo, firstAux->codigoVuelo) < 0) {
 					thirdAux = firstAux;
 					firstAux = secondAux;
 					secondAux = thirdAux;
@@ -274,7 +270,10 @@ int controller_saveAsText(char *path, LinkedList *pArrayListPassenger) {
 	char apellido[MAX_CHARS_LASTNAME];
 	float precio;
 	int tipoPasajero;
+	char tipoPasajeroTxt[50];
 	char codigoVuelo[MAX_CHARS_FLY_CODE];
+	int statusFlight;
+	char statusFlightTxt[50];
 	//A funcion de parser
 
 	if (path != NULL && pArrayListPassenger != NULL) {
@@ -282,7 +281,7 @@ int controller_saveAsText(char *path, LinkedList *pArrayListPassenger) {
 		if (pFile != NULL) {
 			r = 0;
 			fprintf(pFile,
-					"ID, Name, Lastname, Price, Flycode, TypePassenger\n");
+					"id, Name, Lastname, Price, Flycode, Type Passenger, Status Flight\n");
 			for (int i = 0; i < ll_len(pArrayListPassenger); i++) {
 				auxPassenger = (Passenger*) ll_get(pArrayListPassenger, i);
 				Passenger_getId(auxPassenger, &id);
@@ -291,17 +290,29 @@ int controller_saveAsText(char *path, LinkedList *pArrayListPassenger) {
 				Passenger_getPrecio(auxPassenger, &precio);
 				Passenger_getTipoPasajero(auxPassenger, &tipoPasajero);
 				Passenger_getCodigoVuelo(auxPassenger, codigoVuelo);
-				if (auxPassenger != NULL) {
+				Passenger_getStatusFlight(auxPassenger, &statusFlight);
 
-					fprintf(pFile, "%d, %s, %s, %.3f, %s, %d\n", id, nombre,
-							apellido, precio, codigoVuelo, tipoPasajero);
-					printf("%d, %s, %s, %.3f, %d, %s\n", id, nombre, apellido,
-							precio, tipoPasajero, codigoVuelo);
+				if (auxPassenger != NULL) {
+					Passenger_readTypePassengerAndStatusFlight(
+							&auxPassenger->tipoPasajero,
+							&auxPassenger->statusFlight, tipoPasajeroTxt,
+							statusFlightTxt);
+					fprintf(pFile, "%d,%s,%s,%.3f,%s,%s,%s\n", id, nombre,
+							apellido, precio, codigoVuelo, tipoPasajeroTxt,
+							statusFlightTxt);
+					puts("Datos guardados: \n");
+					printf("%d, %s, %s, %.3f, %s, %s, %s\n", id, nombre,
+							apellido, precio, codigoVuelo, tipoPasajeroTxt,
+							statusFlightTxt);
 				}
 			}
 			fclose(pFile);
 		} else {
-			printf("El archivo %s no existe\n", path);
+			printf(
+					"El archivo %s no existe.\n",
+					path);
+			pFile = fopen(path, "w");
+			fclose(pFile);
 		}
 	}
 

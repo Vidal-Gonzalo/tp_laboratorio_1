@@ -29,11 +29,11 @@ Passenger* Passenger_new() {
 }
 
 Passenger* Passenger_newParametrosTxt(char *id, char *nombre, char *apellido,
-		char *precio, char *codigoVuelo, char *tipoPasajero) {
+		char *precio, char *codigoVuelo, char *tipoPasajero, char *statusFlight) {
 	Passenger *aux = Passenger_new();
 	int isValid = 0;
 	if (aux != NULL) {
-		//Validaciones -------------------- FALTA STATUSFLIGHT ---------------------
+		//Validaciones
 		if (Passenger_setIdTxt(aux, id) == 0) {
 			if (Passenger_setNombre(aux, nombre) == 0) {
 				if (Passenger_setApellido(aux, apellido) == 0) {
@@ -41,8 +41,13 @@ Passenger* Passenger_newParametrosTxt(char *id, char *nombre, char *apellido,
 						if (Passenger_setCodigoVuelo(aux, codigoVuelo) == 0) {
 							if (Passenger_setTipoPasajeroTxt(aux, tipoPasajero)
 									== 0) {
-								printf("\n¡Datos cargados correctamente!\n");
-								isValid = 1;
+								if (Passenger_setStatusFlightTxt(aux,
+										statusFlight) == 0) {
+									isValid = 1;
+								} else {
+									printf("Error statusFlight: %s",
+											statusFlight);
+								}
 							} else {
 								printf("Error tipoPasajero: %s", tipoPasajero);
 							}
@@ -70,7 +75,7 @@ Passenger* Passenger_newParametrosTxt(char *id, char *nombre, char *apellido,
 }
 
 Passenger* Passenger_newParametros(int *id, char *nombre, char *apellido,
-		float *precio, char *codigoVuelo, int *tipoPasajero) {
+		float *precio, char *codigoVuelo, int *tipoPasajero, int *statusFlight) {
 	Passenger *aux = Passenger_new();
 	int isValid = 0;
 	if (aux != NULL) {
@@ -82,8 +87,12 @@ Passenger* Passenger_newParametros(int *id, char *nombre, char *apellido,
 						if (Passenger_setCodigoVuelo(aux, codigoVuelo) == 0) {
 							if (Passenger_setTipoPasajero(aux, *tipoPasajero)
 									== 0) {
-								printf("\n¡Datos cargados correctamente!\n");
-								isValid = 1;
+								if (Passenger_setStatusFlight(aux,
+										*statusFlight) == 0) {
+									printf(
+											"\n¡Datos cargados correctamente!\n");
+									isValid = 1;
+								}
 							}
 						}
 					}
@@ -203,6 +212,44 @@ int Passenger_getCodigoVuelo(Passenger *this, char *codigoVuelo) {
 	return r;
 }
 
+int Passenger_setStatusFlight(Passenger *this, int statusFlight) {
+	int r = -1;
+	if (this != NULL && statusFlight >= 0) {
+		r = 0;
+		this->statusFlight = statusFlight;
+	}
+	return r;
+}
+
+int Passenger_setStatusFlightTxt(Passenger *this, char *statusFlight) {
+	int r = -1;
+	if (this != NULL && statusFlight != NULL) {
+		if (Passenger_verifyStatusFlightTxt(statusFlight, &this->statusFlight)
+				== 0) {
+			r = 0;
+		}
+	}
+	return r;
+}
+
+int Passenger_getStatusFlight(Passenger *this, int *statusFlight) {
+	int r = -1;
+	if (this != NULL && statusFlight != NULL) {
+		r = 0;
+		*statusFlight = this->statusFlight;
+	}
+	return r;
+}
+
+int Passenger_getStatusFlightTxt(Passenger *this, char *statusFlight) {
+	int r = -1;
+	if (this != NULL && statusFlight != NULL) {
+		r = 0;
+		sprintf(statusFlight, "%d", this->statusFlight);
+	}
+	return r;
+}
+
 int Passenger_setTipoPasajero(Passenger *this, int tipoPasajero) {
 	int r = -1;
 	if (this != NULL && tipoPasajero >= 0) {
@@ -223,10 +270,10 @@ int Passenger_getTipoPasajero(Passenger *this, int *tipoPasajero) {
 
 int Passenger_setTipoPasajeroTxt(Passenger *this, char *tipoPasajero) {
 	int r = -1;
-	if (this != NULL && tipoPasajero >= 0) {
-		if (isNumber(tipoPasajero) == 0) {
+	if (this != NULL && tipoPasajero != NULL) {
+		if (Passenger_verifyTypePassengerTxt(tipoPasajero, &this->tipoPasajero)
+				== 0) {
 			r = 0;
-			this->tipoPasajero = atoi(tipoPasajero);
 		}
 	}
 	return r;
@@ -293,10 +340,16 @@ int Passenger_LoadPassenger(Passenger *auxiliar) {
 				if (general_getAlphanumeric(auxiliar->codigoVuelo,
 				MAX_CHARS_FLY_CODE, "Codigo de vuelo:\n",
 						"Error, vuelva a intentar.\n", 3) == 0) {
-					if (utn_getNumero("Tipo de pasajero:\n",
+					if (utn_getNumero(
+							"Tipo de pasajero: (1-EconomyClass/2-FirstClass/3-ExecutiveClass\n",
 							"Error, vuelva a intentar.\n", 0, 3,
 							&auxiliar->tipoPasajero) == 0) {
-						r = 0;
+						if (utn_getNumero(
+								"Estado de vuelo (1-En demora/2-En horario/3-En vuelo/4-Aterrizado:\n",
+								"Error, vuelva a intentar.\n", 0, 3,
+								&auxiliar->statusFlight) == 0) {
+							r = 0;
+						}
 					}
 				}
 			}
@@ -306,9 +359,83 @@ int Passenger_LoadPassenger(Passenger *auxiliar) {
 	return r;
 }
 
+int Passenger_verifyTypePassengerTxt(char *typePassenger,
+		int *typePassengerVerified) {
+	int r = -1;
+	if (typePassenger != NULL) {
+		if (strcmp(typePassenger, "ExecutiveClass") == 0) {
+			*typePassengerVerified = 3;
+		} else {
+			if (strcmp(typePassenger, "FirstClass") == 0) {
+				*typePassengerVerified = 2;
+			} else {
+				*typePassengerVerified = 1;
+			}
+		}
+		r = 0;
+	}
+	return r;
+}
+
+int Passenger_readTypePassengerAndStatusFlight(int *typePassenger,
+		int *statusFlight, char *typePassengerTxt, char *statusFlightTxt) {
+	int r = -1;
+	if (typePassenger
+			>= 0&& statusFlight >= 0 && typePassengerTxt != NULL && statusFlightTxt != NULL) {
+		if (*typePassenger == 3) {
+			strncpy(typePassengerTxt, "ExecutiveClass", 50);
+		} else {
+			if (*typePassenger == 2) {
+				strncpy(typePassengerTxt, "FirstClass", 50);
+			} else {
+				strncpy(typePassengerTxt, "EconomyClass", 50);
+			}
+		}
+		if (*statusFlight == 4) {
+			strncpy(statusFlightTxt, "Aterrizado", 50);
+		} else {
+			if (*statusFlight == 3) {
+				strncpy(statusFlightTxt, "En Vuelo", 50);
+			} else {
+				if (*statusFlight == 2) {
+					strncpy(statusFlightTxt, "En Horario", 50);
+				} else {
+					strncpy(statusFlightTxt, "En Demora", 50);
+				}
+			}
+
+		}
+		r = 0;
+	}
+	return r;
+}
+
+int Passenger_verifyStatusFlightTxt(char *statusFlight,
+		int *statusFlightVerified) {
+	int r = -1;
+	if (statusFlight != NULL) {
+		if (strcmp(statusFlight, "Aterrizado") == 0) {
+			*statusFlightVerified = 4;
+		} else {
+			if (strcmp(statusFlight, "En Vuelo") == 0) {
+				*statusFlightVerified = 3;
+			} else {
+				if (strcmp(statusFlight, "En Horario") == 0) {
+					*statusFlightVerified = 2;
+				} else {
+					*statusFlightVerified = 1;
+				}
+			}
+		}
+
+		r = 0;
+	}
+	return r;
+}
+
 int Passenger_getUniqueId() {
 	FILE *pFile;
-	int id = 0;
+	int id = 1;
 
 	pFile = fopen("maxId", "r");
 	if (pFile != NULL) {
@@ -321,36 +448,54 @@ int Passenger_getUniqueId() {
 			fprintf(pFile, "%d", id);
 			fclose(pFile);
 		}
+	} else {
+		pFile = fopen("maxId", "w");
+		if (pFile != NULL) {
+			fprintf(pFile, "%d", id);
+			fclose(pFile);
+		}
 	}
 
 	return id;
 }
 
-void Passenger_printOne(Passenger* p) {
+void Passenger_printOne(Passenger *p) {
+	char typePassengerTxt[50];
+	char statusFlightTxt[50];
+
+	Passenger_readTypePassengerAndStatusFlight(&p->tipoPasajero,
+			&p->statusFlight, typePassengerTxt, statusFlightTxt);
 	printf(
-			"ID %d\nNombre: %s\nApellido: %s\nPrecio: %.2f\nCodigo vuelo: %s\nTipo de pasajero: %d\n",
+			"ID %d\nNombre: %s\nApellido: %s\nPrecio: %.2f\nCodigo vuelo: %s\nTipo de pasajero: %s\nEstado de vuelo: %s\n",
 			p->id, p->nombre, p->apellido, p->precio, p->codigoVuelo,
-			p->tipoPasajero);
+			typePassengerTxt, statusFlightTxt);
 
 }
 
 int Passenger_printPassengers(LinkedList pArrayPassengers[], int size) {
 	int r = -1;
 	Passenger *passenger;
+	char tipoPasajeroTxt[50];
+	char statusFlightTxt[50];
 
 	if (pArrayPassengers != NULL) {
 		if (size > 0) {
-			printf("%*s | %*s | %*s | %*s | %*s | %*s\n", -4, "ID", -MAX,
+			printf("%*s | %*s | %*s | %*s | %*s | %*s | %*s\n", -4, "ID", -MAX,
 					"Nombre", -MAX, "Apellido", -MAX, "Precio", -MAX,
-					"Codigo vuelo", -MAX, "Tipo pasajero");
-			printf("%*c | %*c | %*c | %*c | %*c | %*c\n", -4, '-', -MAX, '-',
-					-MAX, '-', -MAX, '-', -MAX, '-', -MAX, '-');
+					"Codigo vuelo", -MAX, "Tipo pasajero", -MAX,
+					"Estado vuelo");
+			printf("%*c | %*c | %*c | %*c | %*c | %*c | %*c\n", -4, '-', -MAX,
+					'-', -MAX, '-', -MAX, '-', -MAX, '-', -MAX, '-', -MAX, '-');
 			for (int i = 0; i < size; i++) {
 				passenger = (Passenger*) ll_get(pArrayPassengers, i);
-				printf("%-4d | %-10s | %-10s | %-10.2f | %-10s | %-4d\n",
+				Passenger_readTypePassengerAndStatusFlight(
+						&passenger->tipoPasajero, &passenger->statusFlight,
+						tipoPasajeroTxt, statusFlightTxt);
+				printf(
+						"%-4d | %-10s | %-10s | %-10.2f | %-10s | %-10s | %-10s\n",
 						passenger->id, passenger->nombre, passenger->apellido,
 						passenger->precio, passenger->codigoVuelo,
-						passenger->tipoPasajero);
+						tipoPasajeroTxt, statusFlightTxt);
 				r = 0;
 
 			}
@@ -360,12 +505,12 @@ int Passenger_printPassengers(LinkedList pArrayPassengers[], int size) {
 	return r;
 }
 
-int Passenger_ModificarUno(Passenger* p) {
+int Passenger_ModificarUno(Passenger *p) {
 	int r = -1;
 	int opcion;
 	do {
 		if (utn_getNumero(
-				"¿Que campo desea modificar?\n 1-Nombre\n2-Apellido\n3-Codigo de vuelo\n4-Tipo de pasajero\n5-Precio\n6-Salir\n",
+				"¿Que campo desea modificar?\n 1-Nombre\n2-Apellido\n3-Codigo de vuelo\n4-Tipo de pasajero\n5-Precio\n6-Estado vuelo\n7-Salir\n",
 				"Ha habido un error. Intentelo nuevamente.\n", 0, 3, &opcion)
 				== 0) {
 			r = 0;
@@ -379,12 +524,13 @@ int Passenger_ModificarUno(Passenger* p) {
 						"Ha habido un error\n", 3);
 				break;
 			case 3:
-				general_getAlphanumeric(p->codigoVuelo, 10, "Codigo de vuelo:\n",
-						"Ha habido un error.\n", 3);
+				general_getAlphanumeric(p->codigoVuelo, 10,
+						"Codigo de vuelo:\n", "Ha habido un error.\n", 3);
 
 				break;
 			case 4:
-				utn_getNumero("Tipo de pasajero: 1)Economico / 2)Clase alta\n",
+				utn_getNumero(
+						"Tipo de pasajero: 1)Economico / 2)Clase alta / 3)Clase ejecutiva\n",
 						"Ha habido un error. Intentelo nuevamente.\n", 0, 3,
 						&p->tipoPasajero);
 				break;
@@ -394,13 +540,19 @@ int Passenger_ModificarUno(Passenger* p) {
 						&p->precio);
 				break;
 			case 6:
+				utn_getNumero(
+						"Estado de vuelo: 1)En demora / 2)En horario / 3)En vuelo / 4)Aterrizado\n",
+						"Ha habido un error. Intentelo nuevamente.\n", 0, 3,
+						&p->statusFlight);
+				break;
+			case 7:
 				printf("Saliendo...\n");
 				break;
 			default:
-				printf("Por favor, ingrese un numero entre 1 y 6.\n");
+				printf("Por favor, ingrese un numero entre 1 y 7.\n");
 			}
 		}
-	} while (opcion != 6);
+	} while (opcion != 7);
 	return r;
 }
 

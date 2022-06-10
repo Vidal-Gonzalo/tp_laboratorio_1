@@ -1,8 +1,9 @@
-#include <stdio.h>
+	#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "LinkedList.h"
 #include "Passenger.h"
+#include "Flight.h"
 
 /** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
  *
@@ -25,21 +26,24 @@ int parser_PassengerFromText(FILE *pFile, LinkedList *pArrayListPassenger) {
 	char precio[50];
 	char tipoPasajero[50];
 	char codigoVuelo[MAX_CHARS_FLY_CODE];
+	char statusFlight[50];
 
 	if (pFile != NULL && pArrayListPassenger != NULL) {
 		do {
-			if (fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", id,
-					nombre, apellido, precio, codigoVuelo, tipoPasajero) == 6) {
-				if (strcmp("ID", id) != 0) {
+			if (fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n",
+					id, nombre, apellido, precio, codigoVuelo, tipoPasajero,
+					statusFlight) == 7) {
+				if (strcmp("id", id) != 0) {
 					passenger = Passenger_newParametrosTxt(id, nombre, apellido,
-							precio, codigoVuelo, tipoPasajero);
+							precio, codigoVuelo, tipoPasajero, statusFlight);
 					if (passenger != NULL) {
 						if (passenger->id > auxId) {
 							auxId = passenger->id;
 							idFile = fopen("maxId", "w");
 							fprintf(idFile, "%d", auxId);
 							fclose(idFile);
-						}
+						} //Hacer función para que se dé de alta el pasajero verificando si hay otro vuelo con el mismo codigo.
+
 						ll_add(pArrayListPassenger, passenger);
 					}
 				}
@@ -61,14 +65,17 @@ int parser_ReadPassengerFromText(FILE *pFile, Passenger *pArrayListPassenger) {
 	char precio[50];
 	char tipoPasajero[50];
 	char codigoVuelo[MAX_CHARS_FLY_CODE];
+	char statusFlight[5];
+
 
 	if (pFile != NULL && pArrayListPassenger != NULL) {
 		do {
-			if (fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", id,
-					nombre, apellido, precio, codigoVuelo, tipoPasajero) == 6) {
+			if (fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n",
+					id, nombre, apellido, precio, codigoVuelo, tipoPasajero,
+					statusFlight) == 7) {
 				if (strcmp("ID", id) != 0) {
 					passenger = Passenger_newParametrosTxt(id, nombre, apellido,
-							precio, codigoVuelo, tipoPasajero);
+							precio, codigoVuelo, tipoPasajero, statusFlight);
 					if (passenger != NULL) {
 						pArrayListPassenger[i] = *passenger;
 						i++;

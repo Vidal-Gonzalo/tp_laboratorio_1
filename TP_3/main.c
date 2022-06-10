@@ -18,23 +18,36 @@
  10. Salir
  *****************************************************/
 
+//ACLARACIÓN: ECLIPSE NO ME DEJA CREAR NI LEER ARCHIVOS CON FORMATO ESPECÍFICO, SOLO PUEDE TRABAJAR CON ARCHIVOS
+//SIN FORMATO.
+
 int main() {
 	setbuf(stdout, NULL);
 	int option = 0;
 	int r = 0;
+	int dataLoadedResponse = 0;
 	int dataLoaded;
+	int dataSaved = 0;
 	LinkedList *listaPasajeros = ll_newLinkedList();
 
 	do {
 		printf("opcion:\n");
-		scanf("%d", &option);
+		scanf("%d", &option); //Cambiar por utn_getNumero;
 		switch (option) {
 		case 1:
-			if (controller_loadFromText("data2", listaPasajeros) == 0) {
-				puts("Todo bien");
+			dataLoadedResponse = controller_loadFromText("data2",
+					listaPasajeros);
+			if (dataLoadedResponse == 1) {
+				printf(
+						"El archivo no existe, asi que creamos uno para que comiences a cargar tus propios datos :)\n");
 				dataLoaded = 1;
 			} else {
-				puts("Todo mal");
+				if (dataLoadedResponse == 0) {
+					puts("Datos cargados correctamente!\n");
+					dataLoaded = 1;
+				} else {
+					puts("Hubo un error en la carga de datos.\n");
+				}
 			}
 			break;
 		case 2:
@@ -85,12 +98,11 @@ int main() {
 				} else {
 					puts("Todo mal");
 				}
-
 			}
 			break;
 		case 8:
 			if (controller_saveAsText("data2", listaPasajeros) == 0) {
-				puts("todo bien");
+				dataSaved = 1;
 			} else {
 				puts("todo mal");
 			}
@@ -98,6 +110,12 @@ int main() {
 		case 9:
 			r = ll_len(listaPasajeros);
 			printf("%d", r);
+			break;
+		case 10:
+			if (dataSaved == 0) {
+				puts("Por favor, guarda los cambios antes de irte.\n");
+				option = 0;
+			}
 			break;
 		}
 	} while (option != 10);
