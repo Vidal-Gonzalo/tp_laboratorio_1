@@ -1,0 +1,16 @@
+id, Name, Lastname, Price, Flycode, Type Passenger, Status Flight
+1,Lou,González,10000.000,BA2491A,FirstClass,Aterrizado
+2,Ulrike,Muñoz,25000.000,IB0800A,FirstClass,Aterrizado
+3,Brade,Rojas,20000.000,MM0987B,FirstClass,En Horario
+4,Kimbell,Díaz,50000.000,BA2491A,FirstClass,Aterrizado
+5,Sheelagh,Pérez,18000.000,IB0800A,FirstClass,Aterrizado
+6,Gayle,Soto,30000.000,MM0987B,FirstClass,En Horario
+7,Kimberlee,Contreras,33000.000,BA2491A,FirstClass,Aterrizado
+8,Henrieta,Silva,30000.000,IB0800A,FirstClass,Aterrizado
+9,Jeanine,Martínez,18000.000,MM0987B,FirstClass,En Horario
+10,Aggie,Sepúlveda,15000.000,BA2491A,FirstClass,Aterrizado
+11,Gon,Vidal,20.000,20ES2,FirstClass,En Horario
+12,Jueves,Vidal,20.000,20es2,FirstClass,En Horario
+13,July,Corrias,20.000,20ES2,FirstClass,En Horario
+14,Nuevo,Vidal,2000.000,20ES2,FirstClass,En Horario
+15,Gonzalo,Vidal,2000.000,20es20,ExecutiveClass,En Vuelo

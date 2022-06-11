@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "LinkedList.h"
 #include "Passenger.h"
+#include "InputPassenger.h"
 #include "parser.h"
 #include "General.h"
 
@@ -19,14 +20,15 @@ int controller_loadFromText(char *path, LinkedList *pArrayListPassenger) {
 	if (path != NULL && pArrayListPassenger != NULL) {
 		if (ll_len(pArrayListPassenger) > 0) {
 			if (confirmation(
-					"\nSi carga los datos una vez más, se duplicarán ¿Esta seguro que desea realizar esta accion?\n",
-					"Ha habido un error\n") != 1) {
+					"\nSi carga los datos una vez más, se eliminaran los anteriores\n¿Esta seguro que desea realizar esta accion?(1:Si/Otro numero:No)\n",
+					"Ha habido un error\n") == 1) {
+				ll_clear(pArrayListPassenger);
+			} else {
 				return r = -2; //Carga de datos denegada
 			}
 		}
 		pFile = fopen(path, "r");
 		if (pFile == NULL) {
-
 			pFile = fopen(path, "w");
 			fclose(pFile);
 			r = 1;
@@ -52,21 +54,32 @@ int controller_loadFromText(char *path, LinkedList *pArrayListPassenger) {
  */
 int controller_loadFromBinary(char *path, LinkedList *pArrayListPassenger) {
 	int r = -1;
-	FILE *bin;
+	FILE *binFile;
 
 	if (path != NULL && pArrayListPassenger != NULL) {
-		bin = fopen(path, "rb");
-		if (bin == NULL) {
-			printf("El archivo no existe.\n");
-			r = -3; //Archivo no existente
+		if (ll_len(pArrayListPassenger) > 0) {
+			if (confirmation(
+					"\nSi carga los datos una vez más, se eliminaran los anteriores ¿Esta seguro que desea realizar esta accion?(1:Si/Otro numero:No)\n",
+					"Ha habido un error\n") == 1) {
+				ll_clear(pArrayListPassenger);
+			} else {
+				return r = -2; //Carga de datos denegada
+			}
+		}
+		binFile = fopen(path, "rb");
+		if (binFile == NULL) {
+			fclose(binFile);
+			binFile = fopen(path, "wb");
+			fclose(binFile);
+			r = 1; //Archivo no existente
 		} else {
-			if (parser_PassengerFromBinary(bin, pArrayListPassenger) == 0) {
+			if (parser_PassengerFromBinary(binFile, pArrayListPassenger) == 0) {
 				r = 0;
 			} else {
 				r = -4;
 			}
 		}
-		fclose(bin);
+		fclose(binFile);
 	}
 	return r;
 }
@@ -130,23 +143,26 @@ int controller_editPassenger(char *path, LinkedList *pArrayListPassenger) {
 				if (indexToModify != -1) {
 					puts("El pasajero que deseas modificar es:\n");
 					Passenger_printOne(passenger);
-					if (confirmation("¿Esta seguro que desea modificarlo?\n",
+					if (confirmation(
+							"¿Esta seguro que desea modificarlo?\n(1:Si/Otro numero:No)\n",
 							"Ha habido un error.\n") == 1) {
 						Passenger_ModificarUno(passenger);
 						puts("Usuario modificado: \n");
 						Passenger_printOne(passenger);
-						if (confirmation("¿Los datos son correctos?\n",
+						if (confirmation(
+								"¿Los datos son correctos?\n(1:Si/Otro numero:No)\n",
 								"Ha habido un error.\n") == 1) {
 							ll_set(pArrayListPassenger, indexToModify,
 									passenger);
-							puts("Usuario modificado correctamente!\n");
+							r = 0;
 						}
 					}
 				} else {
 					printf("No se ha encontrado el ID.\n");
+					r = -2;
 				}
 			}
-			r = 0;
+
 		}
 	}
 	return r;
@@ -183,16 +199,18 @@ int controller_removePassenger(char *path, LinkedList *pArrayListPassenger) {
 				if (indexToRemove != -1) {
 					puts("El pasajero que deseas remover es:\n");
 					Passenger_printOne(passenger);
-					if (confirmation("¿Esta seguro que desea removerlo?\n",
+					if (confirmation(
+							"¿Esta seguro que desea removerlo?\n(1:Si/Otro numero:No)\n",
 							"Ha habido un error.\n") == 1) {
 						ll_remove(pArrayListPassenger, indexToRemove);
-						puts("Usuario removido correctamente.\n");
+						r = 0;
 					}
 				} else {
 					printf("No se ha encontrado el ID.\n");
+					r = -2;
 				}
 			}
-			r = 0;
+
 		}
 	}
 	return r;
@@ -307,12 +325,7 @@ int controller_saveAsText(char *path, LinkedList *pArrayListPassenger) {
 				}
 			}
 			fclose(pFile);
-		} else {
-			printf(
-					"El archivo %s no existe.\n",
-					path);
-			pFile = fopen(path, "w");
-			fclose(pFile);
+
 		}
 	}
 
@@ -327,6 +340,26 @@ int controller_saveAsText(char *path, LinkedList *pArrayListPassenger) {
  *
  */
 int controller_saveAsBinary(char *path, LinkedList *pArrayListPassenger) {
-	return 1;
+	int r = -1;
+	FILE *pFile = NULL;
+	Passenger *auxPassenger;
+	//A funcion de parser
+
+	if (path != NULL && pArrayListPassenger != NULL) {
+		pFile = fopen(path, "wb");
+		if (pFile != NULL) {
+			r = 0;
+			for (int i = 0; i < ll_len(pArrayListPassenger); i++) {
+				auxPassenger = (Passenger*) ll_get(pArrayListPassenger, i);
+				if (auxPassenger != NULL) {
+					fwrite(auxPassenger, sizeof(Passenger), 1, pFile);
+				}
+			}
+			fclose(pFile);
+		}
+
+	}
+
+	return r;
 }
 

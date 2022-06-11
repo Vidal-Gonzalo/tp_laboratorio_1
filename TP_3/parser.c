@@ -1,9 +1,8 @@
-	#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "LinkedList.h"
 #include "Passenger.h"
-#include "Flight.h"
 
 /** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
  *
@@ -67,7 +66,6 @@ int parser_ReadPassengerFromText(FILE *pFile, Passenger *pArrayListPassenger) {
 	char codigoVuelo[MAX_CHARS_FLY_CODE];
 	char statusFlight[5];
 
-
 	if (pFile != NULL && pArrayListPassenger != NULL) {
 		do {
 			if (fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n",
@@ -96,6 +94,16 @@ int parser_ReadPassengerFromText(FILE *pFile, Passenger *pArrayListPassenger) {
  *
  */
 int parser_PassengerFromBinary(FILE *pFile, LinkedList *pArrayListPassenger) {
+	int r = -1;
+	Passenger aux;
 
-	return 1;
+	if (pFile != NULL && pArrayListPassenger != NULL) {
+		do {
+			fread(&aux, sizeof(Passenger),1,pFile);
+			ll_add(pArrayListPassenger, &aux);
+		} while (!feof(pFile));
+		r = 0;
+	}
+
+	return r;
 }

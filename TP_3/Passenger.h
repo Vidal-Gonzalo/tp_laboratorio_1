@@ -26,7 +26,7 @@ typedef struct {
 	float precio;
 	int tipoPasajero;
 	char codigoVuelo[MAX_CHARS_FLY_CODE];
-	int statusFlight; //Falta statusflight
+	int statusFlight;
 
 } Passenger;
 
@@ -78,11 +78,8 @@ int Passenger_verifyTypePassengerTxt(char *typePassenger,
 int Passenger_verifyStatusFlightTxt(char *statusFlight,
 		int *statusFlightVerified);
 
-int Passenger_LoadPassenger(Passenger *this);
 void Passenger_printOne(Passenger *p);
 int Passenger_printPassengers(LinkedList pArrayPassengers[], int size);
-int Passenger_SearchIndexPerId(Passenger passengerList[], int size, int ID);
-int Passenger_ModificarUno(Passenger *p);
 int Passenger_getUniqueId();
 int Passenger_readTypePassengerAndStatusFlight(int *typePassenger,
 		int *statusFlight, char *typePassengerTxt, char *statusFlightTxt);
