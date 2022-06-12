@@ -24,9 +24,29 @@ static int isNamePassenger(char newArray[], int size) {
 	return r;
 }
 
+
+/** \brief Retorna un espacio de memoria para un Passenger
+ *
+ * \return Passenger*
+ *
+ */
+
 Passenger* Passenger_new() {
 	return (Passenger*) malloc(sizeof(Passenger));
 }
+
+/** \brief Setea los datos de un nuevo pasajero recibiendo chars como argumentos
+ *
+ * \param char *id
+ * \param char *nombre
+ * \param char *apellido
+ * \param char *precio
+ * \param char *codigoVuelo
+ * \param char *tipoPasajero
+ * \param char *statusFlight
+ * \return Passenger*
+ *
+ */
 
 Passenger* Passenger_newParametrosTxt(char *id, char *nombre, char *apellido,
 		char *precio, char *codigoVuelo, char *tipoPasajero, char *statusFlight) {
@@ -74,6 +94,19 @@ Passenger* Passenger_newParametrosTxt(char *id, char *nombre, char *apellido,
 	return aux;
 }
 
+/** \brief Setea los datos de un nuevo pasajero
+ *
+ * \param int *id
+ * \param char *nombre
+ * \param char *apellido
+ * \param float *precio
+ * \param char *codigoVuelo
+ * \param int *tipoPasajero
+ * \param int *statusFlight
+ * \return Passenger*
+ *
+ */
+
 Passenger* Passenger_newParametros(int *id, char *nombre, char *apellido,
 		float *precio, char *codigoVuelo, int *tipoPasajero, int *statusFlight) {
 	Passenger *aux = Passenger_new();
@@ -104,6 +137,13 @@ Passenger* Passenger_newParametros(int *id, char *nombre, char *apellido,
 	}
 	return aux;
 }
+
+/** \brief Libera el espacio de memoria dedicado a un pasajero en particular
+ *
+ * \param Passenger* this
+ * \return int (-1 si salio mal 0 si salio bien)
+ *
+ */
 
 void Passenger_delete(Passenger *this) {
 	if (this != NULL) {
@@ -426,6 +466,13 @@ int Passenger_getUniqueId() {
 	return id;
 }
 
+/** \brief print the content of one element of Passenger
+*
+* \param Passenger* p
+* \return int
+*
+*/
+
 void Passenger_printOne(Passenger *p) {
 	char typePassengerTxt[50];
 	char statusFlightTxt[50];
@@ -438,6 +485,14 @@ void Passenger_printOne(Passenger *p) {
 			typePassengerTxt, statusFlightTxt);
 
 }
+
+/** \brief print the content of passengers array
+*
+* \param LinkedList Passenger*
+* \param length int
+* \return int
+*
+*/
 
 int Passenger_printPassengers(LinkedList pArrayPassengers[], int size) {
 	int r = -1;

@@ -7,6 +7,13 @@
 
 #include "InputPassenger.h"
 
+/** \brief Toma los datos de un pasajero. (Retorna 0 si salio bien -1 si salio mal)
+ *
+ * \param path Passenger aux*
+ * \return int
+ *
+ */
+
 int Passenger_LoadPassenger(Passenger *auxiliar) {
 	int r = -1;
 
@@ -39,6 +46,13 @@ int Passenger_LoadPassenger(Passenger *auxiliar) {
 
 	return r;
 }
+
+/** \brief Guarda los datos modificados de un pasajero. (Retorna 0 si salio bien -1 si salio mal)
+ *
+ * \param path Passenger p*
+ * \return int
+ *
+ */
 
 int Passenger_ModificarUno(Passenger *p) {
 	int r = -1;
