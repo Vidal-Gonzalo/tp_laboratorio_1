@@ -46,7 +46,8 @@ int ll_len(LinkedList *this) {
  */
 static Node* getNode(LinkedList *this, int nodeIndex) {
 	Node *node = NULL;
-	if (this != NULL && nodeIndex >= 0 && nodeIndex < ll_len(this)) {
+	int longitud = ll_len(this);
+	if (this != NULL && nodeIndex >= 0 && nodeIndex < longitud) {
 		node = this->pFirstNode;
 		if (node != NULL) {
 			for (int i = 0; i < nodeIndex; i++) {
@@ -80,10 +81,11 @@ Node* test_getNode(LinkedList *this, int nodeIndex) {
  */
 static int addNode(LinkedList *this, int nodeIndex, void *pElement) {
 	int returnAux = -1;
+	int longitud = ll_len(this);
 	Node *node = (Node*) malloc(sizeof(Node)); 	//node->pNextNode = Basura
 
 	if (node != NULL) {
-		if (this != NULL && nodeIndex <= ll_len(this) && nodeIndex >= 0) {
+		if (this != NULL && nodeIndex <= longitud && nodeIndex >= 0) {
 			if (nodeIndex == 0) {
 				node->pNextNode = this->pFirstNode;
 				this->pFirstNode = node;
@@ -143,8 +145,9 @@ int ll_add(LinkedList *this, void *pElement) {
  */
 void* ll_get(LinkedList *this, int index) {
 	void *returnAux = NULL;
+	int longitud = ll_len(this);
 	Node *node = NULL;
-	if (this != NULL && index >= 0 && index < ll_len(this)) {
+	if (this != NULL && index >= 0 && index < longitud) {
 		node = getNode(this, index);
 		if (node != NULL) {
 			returnAux = node->pElement;
@@ -164,8 +167,10 @@ void* ll_get(LinkedList *this, int index) {
  */
 int ll_set(LinkedList *this, int index, void *pElement) {
 	int returnAux = -1;
+	int longitud = ll_len(this);
+
 	Node *node = NULL;
-	if (this != NULL && index >= 0 && index < ll_len(this)) {
+	if (this != NULL && index >= 0 && index < longitud) {
 		node = getNode(this, index);
 		if (node != NULL) {
 			node->pElement = pElement;
@@ -214,7 +219,7 @@ int ll_clear(LinkedList *this) {
 	int returnAux = -1;
 	int longitud = ll_len(this);
 	if (this != NULL) {
-		for (int i = longitud; i >= 0; i--) { //De adelante patra
+		for (int i = longitud-1; i >= 0; i--) { //De adelante patra
 			ll_remove(this, i);
 		}
 		this->pFirstNode = NULL;
@@ -318,7 +323,9 @@ int ll_push(LinkedList *this, int index, void *pElement) {
  */
 void* ll_pop(LinkedList *this, int index) {
 	void *returnAux = NULL;
-	if (this != NULL && index >= 0 && index < ll_len(this)) {
+	int longitud = ll_len(this);
+
+	if (this != NULL && index >= 0 && index < longitud) {
 		returnAux = ll_get(this, index);
 		ll_remove(this, index);
 	}
@@ -337,13 +344,9 @@ int ll_contains(LinkedList *this, void *pElement) {
 	int returnAux = -1;
 	if (this != NULL) {
 		returnAux = 0;
-		//Usar indexof
-		for (int i = 0; i < ll_len(this); i++) {
-			void *pElementToCompare = ll_get(this, i);
-			if (pElementToCompare == pElement) {
-				returnAux = 1;
-				break;
-			}
+		int index = ll_indexOf(this, pElement);
+		if(index != -1){
+			returnAux = 1;
 		}
 	}
 	return returnAux;
@@ -360,9 +363,10 @@ int ll_contains(LinkedList *this, void *pElement) {
  */
 int ll_containsAll(LinkedList *this, LinkedList *this2) {
 	int returnAux = -1;
+	int longitud = ll_len(this2);
 	if (this != NULL && this2 != NULL) {
 		returnAux = 1;
-		for (int i = 0; i < ll_len(this2); i++) {
+		for (int i = 0; i < longitud; i++) {
 			void *pElement = ll_get(this2, i);
 			returnAux = ll_contains(this, pElement);
 			if (returnAux == 0) {
@@ -385,9 +389,11 @@ int ll_containsAll(LinkedList *this, LinkedList *this2) {
  */
 LinkedList* ll_subList(LinkedList *this, int from, int to) {
 	LinkedList *cloneArray = ll_newLinkedList();
+	int longitud = ll_len(this);
+
 	if (cloneArray != NULL) {
-		if (this != NULL && from >= 0 && from < ll_len(this) && to > from
-				&& to <= ll_len(this)) {
+		if (this != NULL && from >= 0 && from < longitud && to > from
+				&& to <= longitud) {
 			for (int i = from; i < to; i++) {
 				void *pElement = ll_get(this, i);
 				ll_add(cloneArray, pElement);
@@ -407,8 +413,10 @@ LinkedList* ll_subList(LinkedList *this, int from, int to) {
  */
 LinkedList* ll_clone(LinkedList *this) {
 	LinkedList *cloneArray = NULL;
+	int longitud = ll_len(this);
+
 	if (this != NULL) {
-		cloneArray = ll_subList(this, 0, ll_len(this));
+		cloneArray = ll_subList(this, 0, longitud);
 	}
 	return cloneArray;
 }
@@ -443,6 +451,5 @@ int ll_sort(LinkedList *this, int (*pFunc)(void*, void*), int order) {
 		returnAux = 0;
 	}
 	return returnAux;
-
 }
 
